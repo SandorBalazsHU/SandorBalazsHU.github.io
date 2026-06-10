@@ -1,19 +1,9 @@
 const TOP_PROJECT_LIMIT = 3;
+const FALLBACK_RANK = 9999;
 
 document.addEventListener("DOMContentLoaded", () => {
   renderAllProjectSections();
 });
-
-function getProjectsForCategory(category) {
-  return PROJECTS
-    .filter((project) => project.category === category)
-    .sort((a, b) => {
-      const rankA = Number.isFinite(a.rank) ? a.rank : 9999;
-      const rankB = Number.isFinite(b.rank) ? b.rank : 9999;
-
-      return rankA - rankB;
-    });
-}
 
 function renderAllProjectSections() {
   const sections = document.querySelectorAll(".project-section[data-category]");
@@ -24,6 +14,17 @@ function renderAllProjectSections() {
 
     renderProjectSection(section, projects);
   });
+}
+
+function getProjectsForCategory(category) {
+  return PROJECTS
+    .filter((project) => project.category === category)
+    .sort((a, b) => getProjectRank(a) - getProjectRank(b));
+}
+
+function getProjectRank(project) {
+  const rank = Number(project.rank);
+  return Number.isFinite(rank) ? rank : FALLBACK_RANK;
 }
 
 function renderProjectSection(section, projects) {
@@ -56,14 +57,11 @@ function renderProjectSection(section, projects) {
     moreList.appendChild(createProjectCard(project, TOP_PROJECT_LIMIT + index + 1));
   });
 
-  if (hiddenProjects.length === 0) {
-    moreDetails.hidden = true;
-  } else {
-    moreDetails.hidden = false;
+  moreDetails.hidden = hiddenProjects.length === 0;
 
-    if (summaryCount) {
-      summaryCount.textContent = `${hiddenProjects.length} more`;
-    }
+  if (summaryCount) {
+    summaryCount.textContent =
+      hiddenProjects.length > 0 ? `${hiddenProjects.length} more` : "";
   }
 }
 
@@ -77,7 +75,11 @@ function createProjectCard(project, displayIndex) {
   const fragment = template.content.cloneNode(true);
   const card = fragment.querySelector(".project-row");
 
-  setText(card, "[data-project-index]", String(displayIndex));
+  if (!card) {
+    throw new Error("Project row element not found in template.");
+  }
+
+  setText(card, "[data-project-index]", displayIndex);
   setText(card, "[data-project-name]", project.name);
   setText(card, "[data-project-description]", project.description);
   setText(card, "[data-project-status]", project.status);
@@ -100,14 +102,16 @@ function setText(root, selector, value) {
     return;
   }
 
-  if (value === undefined || value === null || value === "") {
+  const text = value === undefined || value === null ? "" : String(value).trim();
+
+  if (text === "") {
     element.hidden = true;
     element.textContent = "";
     return;
   }
 
   element.hidden = false;
-  element.textContent = value;
+  element.textContent = text;
 }
 
 function setupProjectImage(card, project) {
@@ -119,47 +123,71 @@ function setupProjectImage(card, project) {
   }
 
   if (!project.image) {
-    preview.classList.add("no-image");
-    preview.innerHTML = "<span>No image</span>";
+    showNoImagePlaceholder(preview);
     return;
   }
 
-  image.src = project.image;
-  image.alt = `${project.name} preview`;
+  image.src = String(project.image).trim();
+  image.alt = project.name ? `${project.name} preview` : "Project preview";
 
   image.addEventListener("error", () => {
-    preview.classList.add("no-image");
-    preview.innerHTML = "<span>No image</span>";
+    showNoImagePlaceholder(preview);
   });
+}
+
+function showNoImagePlaceholder(preview) {
+  preview.classList.add("no-image");
+  preview.replaceChildren();
+
+  const placeholder = document.createElement("span");
+  placeholder.textContent = "No image";
+
+  preview.appendChild(placeholder);
 }
 
 function setupProjectLink(card, project) {
   const link = card.querySelector("[data-project-link]");
   const privateIndicator = card.querySelector("[data-project-private]");
+  const noneIndicator = card.querySelector("[data-project-none]");
 
-  if (!link || !privateIndicator) {
+  if (!link || !privateIndicator || !noneIndicator) {
     return;
   }
 
-  if (hasPublicGithubLink(project)) {
+  hideProjectActionElements(link, privateIndicator, noneIndicator);
+
+  if (isNonPublicProject(project)) {
+    privateIndicator.hidden = false;
+    setOptionalTitle(privateIndicator, project.nonPublicReason);
+    return;
+  }
+
+  if (hasGithubLink(project)) {
     link.hidden = false;
     link.href = project.github.trim();
-
-    privateIndicator.hidden = true;
-    privateIndicator.removeAttribute("title");
     return;
   }
 
+  noneIndicator.hidden = false;
+}
+
+function hideProjectActionElements(link, privateIndicator, noneIndicator) {
   link.hidden = true;
   link.removeAttribute("href");
 
-  privateIndicator.hidden = false;
+  privateIndicator.hidden = true;
+  privateIndicator.removeAttribute("title");
 
-  if (project.nonPublicReason) {
-    privateIndicator.title = project.nonPublicReason;
-  } else {
-    privateIndicator.removeAttribute("title");
-  }
+  noneIndicator.hidden = true;
+  noneIndicator.removeAttribute("title");
+}
+
+function isNonPublicProject(project) {
+  return project.public === false;
+}
+
+function hasGithubLink(project) {
+  return typeof project.github === "string" && project.github.trim() !== "";
 }
 
 function setupProjectTags(card, tags) {
@@ -171,14 +199,20 @@ function setupProjectTags(card, tags) {
 
   tagContainer.replaceChildren();
 
-  if (!Array.isArray(tags) || tags.length === 0) {
+  const normalizedTags = Array.isArray(tags)
+    ? tags
+        .map((tag) => String(tag).trim())
+        .filter((tag) => tag !== "")
+    : [];
+
+  if (normalizedTags.length === 0) {
     tagContainer.hidden = true;
     return;
   }
 
   tagContainer.hidden = false;
 
-  tags.forEach((tag) => {
+  normalizedTags.forEach((tag) => {
     const tagElement = document.createElement("span");
     tagElement.className = "project-tag";
     tagElement.textContent = tag;
@@ -195,7 +229,22 @@ function setupProjectHighlights(card, project) {
 
   highlightsContainer.replaceChildren();
 
-  const highlights = [
+  const highlights = getProjectHighlights(project);
+
+  if (highlights.length === 0) {
+    highlightsContainer.hidden = true;
+    return;
+  }
+
+  highlightsContainer.hidden = false;
+
+  highlights.forEach((highlight) => {
+    highlightsContainer.appendChild(createProjectHighlight(highlight));
+  });
+}
+
+function getProjectHighlights(project) {
+  return [
     {
       key: "award",
       icon: "🏆",
@@ -214,43 +263,39 @@ function setupProjectHighlights(card, project) {
       label: "Grade",
       text: project.grade
     }
-  ].filter((highlight) => {
-    return typeof highlight.text === "string" && highlight.text.trim() !== "";
-  });
+  ]
+    .map((highlight) => ({
+      ...highlight,
+      text: typeof highlight.text === "string" ? highlight.text.trim() : ""
+    }))
+    .filter((highlight) => highlight.text !== "");
+}
 
-  if (highlights.length === 0) {
-    highlightsContainer.hidden = true;
-    return;
-  }
+function createProjectHighlight(highlight) {
+  const item = document.createElement("div");
+  item.className = `project-highlight project-highlight-${highlight.key}`;
 
-  highlightsContainer.hidden = false;
+  const icon = document.createElement("span");
+  icon.className = "project-highlight-icon";
+  icon.setAttribute("aria-hidden", "true");
+  icon.textContent = highlight.icon;
 
-  highlights.forEach((highlight) => {
-    const item = document.createElement("div");
-    item.className = `project-highlight project-highlight-${highlight.key}`;
+  const text = document.createElement("span");
+  text.className = "project-highlight-text";
 
-    const icon = document.createElement("span");
-    icon.className = "project-highlight-icon";
-    icon.setAttribute("aria-hidden", "true");
-    icon.textContent = highlight.icon;
+  const label = document.createElement("strong");
+  label.textContent = `${highlight.label}: `;
 
-    const text = document.createElement("span");
-    text.className = "project-highlight-text";
+  const value = document.createElement("span");
+  value.textContent = highlight.text;
 
-    const label = document.createElement("strong");
-    label.textContent = `${highlight.label}: `;
+  text.appendChild(label);
+  text.appendChild(value);
 
-    const value = document.createElement("span");
-    value.textContent = highlight.text;
+  item.appendChild(icon);
+  item.appendChild(text);
 
-    text.appendChild(label);
-    text.appendChild(value);
-
-    item.appendChild(icon);
-    item.appendChild(text);
-
-    highlightsContainer.appendChild(item);
-  });
+  return item;
 }
 
 function setupProjectVisibility(card, project) {
@@ -260,7 +305,7 @@ function setupProjectVisibility(card, project) {
     return;
   }
 
-  if (hasPublicGithubLink(project)) {
+  if (!isNonPublicProject(project)) {
     visibility.hidden = true;
     visibility.textContent = "";
     visibility.removeAttribute("title");
@@ -269,20 +314,15 @@ function setupProjectVisibility(card, project) {
 
   visibility.hidden = false;
   visibility.textContent = "Non-public";
-
-  if (project.nonPublicReason) {
-    visibility.title = project.nonPublicReason;
-  } else {
-    visibility.removeAttribute("title");
-  }
+  setOptionalTitle(visibility, project.nonPublicReason);
 }
 
-function hasPublicGithubLink(project) {
-  const isPublic = project.public !== false;
-  const hasGithubLink =
-    typeof project.github === "string" && project.github.trim() !== "";
-
-  return isPublic && hasGithubLink;
+function setOptionalTitle(element, title) {
+  if (typeof title === "string" && title.trim() !== "") {
+    element.title = title.trim();
+  } else {
+    element.removeAttribute("title");
+  }
 }
 
 function createEmptyState() {

@@ -58,7 +58,7 @@ const PROJECTS = [
     name: "8×8×8 LED Cube Controller",
     description: "Custom driver board for a multiplexed LED cube using shift registers, transistor switching and modular connectors.",
     image: "img/led-cube.jpg",
-    github: "https://github.com/sandorbalazs9402",
+    
     tags: ["Arduino", "LED", "74HC595", "Multiplexing"],
     status: "Active",
     type: "Hardware",
