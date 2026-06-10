@@ -22,23 +22,22 @@
     <nav class="top-nav" aria-label="Main navigation">
       <a href="#projects">Projects</a>
       <a href="#future">Future plans</a>
-      <a href="https://github.com/sandorbalazs9402" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/sandorbalazshu" target="_blank" rel="noopener noreferrer">GitHub</a>
     </nav>
 
     <section class="hero">
-      <p class="eyebrow">Software · Electronics · Embedded Systems · Experiments</p>
+      <p class="eyebrow">Software · Electronics · Embedded Systems · Experiments · Education · Hobbies</p>
 
       <h1>Sándor Balázs</h1>
 
       <p class="hero-text">
-        I build software, electronics, measurement systems and experimental tools.
-        This page collects my most important public projects in a structured,
-        readable and compact form.
+        I build software, electronics, embedded systems, experimental tools and educational projects.
+        This page collects my projects in a structured, readable and compact form.
       </p>
 
       <div class="hero-actions">
         <a class="button primary" href="#projects">Browse projects</a>
-        <a class="button secondary" href="https://github.com/sandorbalazs9402" target="_blank" rel="noopener noreferrer">
+        <a class="button secondary" href="https://github.com/sandorbalazshu" target="_blank" rel="noopener noreferrer">
           Open GitHub
         </a>
       </div>
@@ -50,9 +49,9 @@
       <h2>About this portfolio</h2>
 
       <p>
-        My GitHub profile contains different kinds of work: electronics, software,
-        embedded experiments, measurement tools and educational projects. This page
-        is a curated catalogue designed to make the structure easier to understand.
+        My GitHub profile contains different kinds of work: software, electronics,
+        embedded experiments, tools and educational projects. This page
+        is a curated catalogue designed to make the structure easier to follow.
       </p>
     </section>
 
@@ -62,7 +61,7 @@
         <h2>Project categories</h2>
         <p>
           Each category shows the top five projects first. Additional projects are
-          available in a native expandable section.
+          available in an expandable section.
         </p>
       </div>
 
@@ -72,7 +71,7 @@
             <p class="section-kicker">Top selection</p>
             <h3>Featured projects</h3>
           </div>
-          <p>Selected projects that best represent my technical direction.</p>
+          <p>These are the projects that best represent my technical direction. My personal projects are listed below.</p>
         </div>
 
         <div class="project-table">
@@ -299,6 +298,7 @@
         <div class="project-title-line">
           <h4 data-project-name></h4>
           <span class="project-status" data-project-status></span>
+          <span class="project-visibility" data-project-visibility hidden></span>
         </div>
 
         <div class="project-meta">
@@ -307,6 +307,7 @@
         </div>
 
         <div class="project-tags" data-project-tags></div>
+        <div class="project-highlights" data-project-highlights></div>
       </div>
 
       <p class="project-description" data-project-description></p>
@@ -319,6 +320,11 @@
         <a class="project-link" data-project-link target="_blank" rel="noopener noreferrer">
           GitHub
         </a>
+
+        <div class="project-private-link" data-project-private hidden>
+          <span class="private-icon" aria-hidden="true">🔒</span>
+          <span class="private-text">Non-public</span>
+        </div>
       </div>
     </article>
   </template>

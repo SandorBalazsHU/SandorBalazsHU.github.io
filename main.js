@@ -1,19 +1,8 @@
-const TOP_PROJECT_LIMIT = 5;
+const TOP_PROJECT_LIMIT = 3;
 
 document.addEventListener("DOMContentLoaded", () => {
   renderAllProjectSections();
 });
-
-function renderAllProjectSections() {
-  const sections = document.querySelectorAll(".project-section[data-category]");
-
-  sections.forEach((section) => {
-    const category = section.dataset.category;
-    const projects = getProjectsForCategory(category);
-
-    renderProjectSection(section, projects);
-  });
-}
 
 function getProjectsForCategory(category) {
   return PROJECTS
@@ -24,6 +13,17 @@ function getProjectsForCategory(category) {
 
       return rankA - rankB;
     });
+}
+
+function renderAllProjectSections() {
+  const sections = document.querySelectorAll(".project-section[data-category]");
+
+  sections.forEach((section) => {
+    const category = section.dataset.category;
+    const projects = getProjectsForCategory(category);
+
+    renderProjectSection(section, projects);
+  });
 }
 
 function renderProjectSection(section, projects) {
@@ -87,6 +87,8 @@ function createProjectCard(project, displayIndex) {
   setupProjectImage(card, project);
   setupProjectLink(card, project);
   setupProjectTags(card, project.tags);
+  setupProjectHighlights(card, project);
+  setupProjectVisibility(card, project);
 
   return fragment;
 }
@@ -133,19 +135,31 @@ function setupProjectImage(card, project) {
 
 function setupProjectLink(card, project) {
   const link = card.querySelector("[data-project-link]");
+  const privateIndicator = card.querySelector("[data-project-private]");
 
-  if (!link) {
+  if (!link || !privateIndicator) {
     return;
   }
 
-  if (!project.github) {
-    link.hidden = true;
-    link.removeAttribute("href");
+  if (hasPublicGithubLink(project)) {
+    link.hidden = false;
+    link.href = project.github.trim();
+
+    privateIndicator.hidden = true;
+    privateIndicator.removeAttribute("title");
     return;
   }
 
-  link.hidden = false;
-  link.href = project.github;
+  link.hidden = true;
+  link.removeAttribute("href");
+
+  privateIndicator.hidden = false;
+
+  if (project.nonPublicReason) {
+    privateIndicator.title = project.nonPublicReason;
+  } else {
+    privateIndicator.removeAttribute("title");
+  }
 }
 
 function setupProjectTags(card, tags) {
@@ -170,6 +184,105 @@ function setupProjectTags(card, tags) {
     tagElement.textContent = tag;
     tagContainer.appendChild(tagElement);
   });
+}
+
+function setupProjectHighlights(card, project) {
+  const highlightsContainer = card.querySelector("[data-project-highlights]");
+
+  if (!highlightsContainer) {
+    return;
+  }
+
+  highlightsContainer.replaceChildren();
+
+  const highlights = [
+    {
+      key: "award",
+      icon: "🏆",
+      label: "Award",
+      text: project.award
+    },
+    {
+      key: "conference",
+      icon: "🎤",
+      label: "Conference",
+      text: project.conference
+    },
+    {
+      key: "grade",
+      icon: "🎓",
+      label: "Grade",
+      text: project.grade
+    }
+  ].filter((highlight) => {
+    return typeof highlight.text === "string" && highlight.text.trim() !== "";
+  });
+
+  if (highlights.length === 0) {
+    highlightsContainer.hidden = true;
+    return;
+  }
+
+  highlightsContainer.hidden = false;
+
+  highlights.forEach((highlight) => {
+    const item = document.createElement("div");
+    item.className = `project-highlight project-highlight-${highlight.key}`;
+
+    const icon = document.createElement("span");
+    icon.className = "project-highlight-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = highlight.icon;
+
+    const text = document.createElement("span");
+    text.className = "project-highlight-text";
+
+    const label = document.createElement("strong");
+    label.textContent = `${highlight.label}: `;
+
+    const value = document.createElement("span");
+    value.textContent = highlight.text;
+
+    text.appendChild(label);
+    text.appendChild(value);
+
+    item.appendChild(icon);
+    item.appendChild(text);
+
+    highlightsContainer.appendChild(item);
+  });
+}
+
+function setupProjectVisibility(card, project) {
+  const visibility = card.querySelector("[data-project-visibility]");
+
+  if (!visibility) {
+    return;
+  }
+
+  if (hasPublicGithubLink(project)) {
+    visibility.hidden = true;
+    visibility.textContent = "";
+    visibility.removeAttribute("title");
+    return;
+  }
+
+  visibility.hidden = false;
+  visibility.textContent = "Non-public";
+
+  if (project.nonPublicReason) {
+    visibility.title = project.nonPublicReason;
+  } else {
+    visibility.removeAttribute("title");
+  }
+}
+
+function hasPublicGithubLink(project) {
+  const isPublic = project.public !== false;
+  const hasGithubLink =
+    typeof project.github === "string" && project.github.trim() !== "";
+
+  return isPublic && hasGithubLink;
 }
 
 function createEmptyState() {

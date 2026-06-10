@@ -1,55 +1,60 @@
+A mezők jelentése:
+
+Mező	Típus	Kötelező?	Jelentés
+category	string	igen	Megmondja, melyik HTML szekcióba kerüljön a projekt. Például "featured", "electronics", "software", "measurement", "photo-astro", "other".
+rank	number	opcionális	Sorrend kategórián belül. Minél kisebb, annál előrébb kerül. Ha hiányzik, a lista vége felé kerül.
+name	string	igen	A projekt neve. Ez jelenik meg címként.
+description	string	erősen ajánlott	Rövid leírás a projektről. Technikailag elhagyható, de tartalmilag fontos.
+image	string	opcionális	Projektkép elérési útja. Például "img/led-cube.jpg". Ha nincs, No image placeholder jelenik meg.
+github	string	opcionális	GitHub repo link. Ha nincs vagy üres, a GitHub gomb helyett non-public jelzés jelenhet meg.
+tags	string[]	opcionális	Technológiák, témák, kulcsszavak. Például ["Arduino", "74HC595", "KiCad"].
+status	string	opcionális	Projektállapot. Például "Active", "Completed", "Prototype", "Planned", "Idea".
+type	string	opcionális	Projekt típusa. Például "Hardware", "Software", "Research", "BSc thesis", "Tool".
+year	string vagy number	opcionális	Év vagy időszak. Például "2026" vagy "2021–2022".
+public	boolean	opcionális	Láthatósági jelzés. Ha false, akkor nem jelenik meg GitHub gomb, hanem Non-public jelzés kerül ki. Ha hiányzik, alapból publikusnak tekinthető, feltéve hogy van github link.
+nonPublicReason	string	opcionális	Rövid magyarázat, miért nem publikus. Például "Institutional / research project" vagy "Thesis repository is not publicly available".
+award	string	opcionális	Díj vagy elismerés. Például "ELTE Faculty of Informatics Thesis Excellence Award, 2021".
+conference	string	opcionális	Konferencia, előadás, bemutatás. Például "Presented at Scientific Students' Associations Conference, 2021".
+grade	string	opcionális	Érdemjegy vagy értékelés. Például "Excellent, highest grade".
+
+
+
 const PROJECTS = [
   {
     category: "featured",
     rank: 1,
-    name: "Msc thesis - CNN research",
-    description: "A deep learning MSc thesis project focused on classifying a large personal photo dataset with convolutional neural networks, comparing multiple models and designing a lightweight classifier for local use.",
-    image: "img/msc_thesis.png",
-    github: "https://github.com/SandorBalazsHU/elte-ik-msc-thesis",
-    tags: ["CNN", "Photography", "Msc"],
-    status: "Completed",
-    type: "Neural networks",
-    year: "2025",
-    grade: "Excellent, grade 5/5"
+    name: "8×8×8 LED Cube Controller",
+    description: "A modular LED cube controller based on shift registers, transistor layer switching and handmade wiring.",
+    image: "img/led-cube.jpg",
+    github: "https://github.com/sandorbalazs9402",
+    tags: ["Arduino", "74HC595", "KiCad"],
+    status: "Active",
+    type: "Hardware",
+    year: "2026"
   },
   {
     category: "featured",
     rank: 2,
-    name: "Bsc thesis - 3D Traffic Simulation",
-    description: "C++ and OpenGL based 3D traffic simulation tool for modeling road networks, visualizing vehicle movement, testing routing behavior and collecting traffic flow statistics.",
-    image: "img/bsc_thesis.png",
-    github: "https://github.com/sandorbalazshu",
-    tags: ["C++", "OpenGL", "SDL2", "Simulation", "Pathfinding"],
-    status: "Completed",
+    name: "CPU Random Test",
+    description: "A C++ and Python based measurement project for collecting, analyzing and visualizing hardware random values.",
+    image: "img/random-test.jpg",
+    github: "https://github.com/sandorbalazs9402",
+    tags: ["C++", "Python", "Analysis"],
+    status: "Prototype",
     type: "Software",
-    year: "2021",
-    award: "ELTE Faculty of Informatics Thesis Excellence Award, 2021",
-    grade: "Excellent, highest possible grade"
+    year: "2026"
   },
   {
     category: "featured",
     rank: 3,
-    name: "TTCN3 IDE Call hierarchy analyzer",
-    description: "This project was developed in the joint software technology laboratory of ELTE and Ericsson. It provides interactive call hierarchy analysis for large TTCN-3 based industrial test systems, helping developers understand complex function relationships, navigate large codebases and support debugging and maintenance through call graph visualization.",
-    image: "img/ttcn3.png",
-    github: "https://github.com/SandorBalazsHU/titan.EclipsePlug-ins",
-    tags: ["TTCN3", "JAVA", "Eclipse", "IDE", "Opensource", "Tools", "Code analysis", "Research"],
-    status: "Completed",
-    type: "Research / Tooling",
-    year: "2019",
-    conference: "EFOP Software research conference Dabas 2019.06.22."
-  },
-  {
-    category: "featured",
-    rank: 4,
-    name: "Medical Device Simulation for SPECT/CT Systems",
-    description: "Contributed to a large-scale internal Python simulation system for SPECT/CT medical imaging devices, modeling CAN bus level hardware communication in the ELTE-Mediso Software Technology Laboratory.",
-    tags: ["Python", "Simulation", "Medical Imaging", "SPECT/CT", "CAN Bus"],
-    status: "Completed",
-    type: "Research / Tooling",
-    year: "2023",
-    public: false,
-    nonPublicReason: "Institutional / research project"
+    name: "Z80 BASIC Computer Concept",
+    description: "A planned retrocomputer project designed around a proven Z80 BASIC ROM and custom hardware architecture.",
+    image: "img/z80-basic.jpg",
+    github: "https://github.com/sandorbalazs9402",
+    tags: ["Z80", "BASIC", "Digital logic"],
+    status: "Planned",
+    type: "Retrocomputing",
+    year: "2026"
   },
 
   {

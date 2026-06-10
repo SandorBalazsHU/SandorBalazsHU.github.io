@@ -648,3 +648,106 @@ main,
     aspect-ratio: 4 / 3;
   }
 }
+
+.project-highlights {
+  display: grid;
+  gap: 0.38rem;
+  margin-top: 0.75rem;
+}
+
+.project-highlight {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  max-width: 100%;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  border-radius: var(--radius-sm);
+  background: rgba(125, 211, 252, 0.055);
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.project-highlight-icon {
+  flex: 0 0 auto;
+  line-height: 1.35;
+  opacity: 0.9;
+}
+
+.project-highlight-text {
+  min-width: 0;
+}
+
+.project-highlight-text strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.project-highlight-award {
+  border-color: rgba(253, 230, 138, 0.22);
+  background: rgba(253, 230, 138, 0.06);
+}
+
+.project-highlight-conference {
+  border-color: rgba(125, 211, 252, 0.2);
+  background: rgba(125, 211, 252, 0.055);
+}
+
+.project-highlight-grade {
+  border-color: rgba(134, 239, 172, 0.2);
+  background: rgba(134, 239, 172, 0.055);
+}
+
+@media (max-width: 760px) {
+  .project-highlights {
+    margin-top: 0.85rem;
+  }
+
+  .project-highlight {
+    font-size: 0.82rem;
+  }
+}
+
+.project-visibility {
+  padding: 0.22rem 0.48rem;
+  border: 1px solid rgba(248, 250, 252, 0.16);
+  border-radius: 999px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.045);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.project-private-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.4rem;
+  width: 100%;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid rgba(248, 250, 252, 0.13);
+  border-radius: 999px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: default;
+}
+
+.private-icon {
+  opacity: 0.88;
+}
+
+.private-text {
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .project-private-link {
+    width: auto;
+    min-width: 9rem;
+  }
+}
