@@ -1,10 +1,329 @@
 <!DOCTYPE html>
-<html lang="hu">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Sándor Balázs</title>
-    </head>
-    <body>
-        <h1>Work in progress!</h1>
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sándor Balázs — Projects</title>
+
+  <meta
+    name="description"
+    content="A compact portfolio of software, electronics, embedded systems, measurement and experimental projects by Sándor Balázs."
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="page-background"></div>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Main navigation">
+      <a href="#projects">Projects</a>
+      <a href="#future">Future plans</a>
+      <a href="https://github.com/sandorbalazs9402" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Software · Electronics · Embedded Systems · Experiments</p>
+
+      <h1>Sándor Balázs</h1>
+
+      <p class="hero-text">
+        I build software, electronics, measurement systems and experimental tools.
+        This page collects my most important public projects in a structured,
+        readable and compact form.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button primary" href="#projects">Browse projects</a>
+        <a class="button secondary" href="https://github.com/sandorbalazs9402" target="_blank" rel="noopener noreferrer">
+          Open GitHub
+        </a>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="intro-card" aria-label="Short introduction">
+      <h2>About this portfolio</h2>
+
+      <p>
+        My GitHub profile contains different kinds of work: electronics, software,
+        embedded experiments, measurement tools and educational projects. This page
+        is a curated catalogue designed to make the structure easier to understand.
+      </p>
+    </section>
+
+    <section id="projects" class="projects-area" aria-label="Project catalogue">
+      <div class="section-title-block">
+        <p class="eyebrow">Catalogue</p>
+        <h2>Project categories</h2>
+        <p>
+          Each category shows the top five projects first. Additional projects are
+          available in a native expandable section.
+        </p>
+      </div>
+
+      <section class="project-section" data-category="featured">
+        <div class="project-section-header">
+          <div>
+            <p class="section-kicker">Top selection</p>
+            <h3>Featured projects</h3>
+          </div>
+          <p>Selected projects that best represent my technical direction.</p>
+        </div>
+
+        <div class="project-table">
+          <div class="project-table-head" aria-hidden="true">
+            <span>#</span>
+            <span>Project</span>
+            <span>Description</span>
+            <span>Preview</span>
+            <span>Link</span>
+          </div>
+
+          <div class="project-list" data-project-list="main"></div>
+
+          <details class="more-projects">
+            <summary>
+              <span class="summary-label">Show more featured projects</span>
+              <span class="summary-count" data-summary-count></span>
+            </summary>
+
+            <div class="project-list more-list" data-project-list="more"></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="project-section" data-category="electronics">
+        <div class="project-section-header">
+          <div>
+            <p class="section-kicker">Hardware</p>
+            <h3>Electronics & Embedded</h3>
+          </div>
+          <p>Microcontrollers, digital logic, measurement, handmade circuits and hardware experiments.</p>
+        </div>
+
+        <div class="project-table">
+          <div class="project-table-head" aria-hidden="true">
+            <span>#</span>
+            <span>Project</span>
+            <span>Description</span>
+            <span>Preview</span>
+            <span>Link</span>
+          </div>
+
+          <div class="project-list" data-project-list="main"></div>
+
+          <details class="more-projects">
+            <summary>
+              <span class="summary-label">Show more electronics projects</span>
+              <span class="summary-count" data-summary-count></span>
+            </summary>
+
+            <div class="project-list more-list" data-project-list="more"></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="project-section" data-category="software">
+        <div class="project-section-header">
+          <div>
+            <p class="section-kicker">Code</p>
+            <h3>Software</h3>
+          </div>
+          <p>Applications, tools, scripts, analyzers, teaching utilities and experimental software.</p>
+        </div>
+
+        <div class="project-table">
+          <div class="project-table-head" aria-hidden="true">
+            <span>#</span>
+            <span>Project</span>
+            <span>Description</span>
+            <span>Preview</span>
+            <span>Link</span>
+          </div>
+
+          <div class="project-list" data-project-list="main"></div>
+
+          <details class="more-projects">
+            <summary>
+              <span class="summary-label">Show more software projects</span>
+              <span class="summary-count" data-summary-count></span>
+            </summary>
+
+            <div class="project-list more-list" data-project-list="more"></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="project-section" data-category="measurement">
+        <div class="project-section-header">
+          <div>
+            <p class="section-kicker">Data</p>
+            <h3>Measurement & Analysis</h3>
+          </div>
+          <p>Data collection, signal analysis, random tests, dashboards and instrumentation-related work.</p>
+        </div>
+
+        <div class="project-table">
+          <div class="project-table-head" aria-hidden="true">
+            <span>#</span>
+            <span>Project</span>
+            <span>Description</span>
+            <span>Preview</span>
+            <span>Link</span>
+          </div>
+
+          <div class="project-list" data-project-list="main"></div>
+
+          <details class="more-projects">
+            <summary>
+              <span class="summary-label">Show more measurement projects</span>
+              <span class="summary-count" data-summary-count></span>
+            </summary>
+
+            <div class="project-list more-list" data-project-list="more"></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="project-section" data-category="photo-astro">
+        <div class="project-section-header">
+          <div>
+            <p class="section-kicker">Visual & sky</p>
+            <h3>Photography & Astronomy</h3>
+          </div>
+          <p>Astrophotography, astronomy helpers, image-processing ideas and sky-observation tools.</p>
+        </div>
+
+        <div class="project-table">
+          <div class="project-table-head" aria-hidden="true">
+            <span>#</span>
+            <span>Project</span>
+            <span>Description</span>
+            <span>Preview</span>
+            <span>Link</span>
+          </div>
+
+          <div class="project-list" data-project-list="main"></div>
+
+          <details class="more-projects">
+            <summary>
+              <span class="summary-label">Show more photography and astronomy projects</span>
+              <span class="summary-count" data-summary-count></span>
+            </summary>
+
+            <div class="project-list more-list" data-project-list="more"></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="project-section" data-category="other">
+        <div class="project-section-header">
+          <div>
+            <p class="section-kicker">Mixed</p>
+            <h3>Other experiments</h3>
+          </div>
+          <p>Ideas, prototypes and projects that do not fit neatly into the main categories.</p>
+        </div>
+
+        <div class="project-table">
+          <div class="project-table-head" aria-hidden="true">
+            <span>#</span>
+            <span>Project</span>
+            <span>Description</span>
+            <span>Preview</span>
+            <span>Link</span>
+          </div>
+
+          <div class="project-list" data-project-list="main"></div>
+
+          <details class="more-projects">
+            <summary>
+              <span class="summary-label">Show more experiments</span>
+              <span class="summary-count" data-summary-count></span>
+            </summary>
+
+            <div class="project-list more-list" data-project-list="more"></div>
+          </details>
+        </div>
+      </section>
+    </section>
+
+    <section id="future" class="future-card">
+      <p class="eyebrow">Next</p>
+      <h2>Future plans and ideas</h2>
+
+      <div class="future-grid">
+        <article>
+          <h3>Embedded systems</h3>
+          <p>
+            More low-level experiments with microcontrollers, sensors, displays,
+            digital logic and custom-built hardware.
+          </p>
+        </article>
+
+        <article>
+          <h3>Measurement infrastructure</h3>
+          <p>
+            Long-term logging, visualization and analysis tools for electronics,
+            environmental data and small lab systems.
+          </p>
+        </article>
+
+        <article>
+          <h3>Educational tools</h3>
+          <p>
+            Small interactive tools and teaching-oriented examples for programming,
+            electronics and computer science concepts.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Built as a lightweight static portfolio with HTML, CSS and vanilla JavaScript.
+    </p>
+  </footer>
+
+  <template id="project-card-template">
+    <article class="project-row">
+      <div class="project-index" data-project-index></div>
+
+      <div class="project-main">
+        <div class="project-title-line">
+          <h4 data-project-name></h4>
+          <span class="project-status" data-project-status></span>
+        </div>
+
+        <div class="project-meta">
+          <span data-project-year></span>
+          <span data-project-type></span>
+        </div>
+
+        <div class="project-tags" data-project-tags></div>
+      </div>
+
+      <p class="project-description" data-project-description></p>
+
+      <figure class="project-preview">
+        <img data-project-image alt="">
+      </figure>
+
+      <div class="project-actions">
+        <a class="project-link" data-project-link target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+      </div>
+    </article>
+  </template>
+
+  <script src="projects.js"></script>
+  <script src="main.js"></script>
+</body>
 </html>
